@@ -1,30 +1,34 @@
 .container {
     width: 100%;
     max-width: 1200px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px auto;
     font-family: Arial, sans-serif;
-  }
-  
-  .header {
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
     text-align: center;
     background-color: #282c34;
     color: white;
     padding: 20px;
     border-radius: 8px;
-    width: 100%;
-  }
-  
-  .postsContainer {
+    width: 90%;
+}
+
+.postsContainer {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
     margin-top: 20px;
     width: 100%;
-  }
-  
-  .post {
-    /* flex: 1 1 calc(30% - 20px);  */
+}
+
+.post {
     max-width: calc(30%- 20px);
     width: 300px;
     height: 300px;
@@ -34,21 +38,31 @@
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
-  }
-  
-  .post h2 {
+}
+
+.post h2 {
     margin: 0 0 10px;
     font-size: 18px;
-  }
-  
-  .post p {
+}
+
+.post p {
     font-size: 14px;
     color: #555;
-  }
+}
 
-  .readMore {
+.readMore {
     color: #007bff;
     text-decoration: none;
     font-weight: bold;
-  }
-  
+}
+
+.pagination {
+    display: flex;
+    margin: 15px 0;
+    justify-content: center;
+}
+
+.postsButtons {
+    display: flex;
+    gap: 20px;
+}

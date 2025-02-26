@@ -6,7 +6,7 @@ import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
-import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks";
+import { useDispatch, useSelector } from 'react-redux';
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import s from './login.module.css'
 import {useNavigate} from "react-router-dom";
@@ -18,19 +18,19 @@ import { font } from '../../app/App';
 
 export const Login = () => {
     let [isShowPassword, setShowPassword] = useState(false);
+    
     const handleClickShowPassword = () => {
         setShowPassword(!isShowPassword)
     }
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    const dispatch = useAppDispatch()
+    const dispatch = useDispatch()
     const navigate = useNavigate();
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
-            //rememberMe: false
         }, validate: (values) => {
             const errors = {}
             if (!values.email) {
@@ -40,7 +40,7 @@ export const Login = () => {
                 errors.email = 'Invalid email address';
             }
             if (values.password.length <= 4) {
-                errors.password = 'Password must be 5 symbol'
+                errors.password = 'Password must be 5 symbols or more'
             }
             return errors
         },
@@ -50,16 +50,14 @@ export const Login = () => {
         }
 
     })
-    let isLoggedIn=useAppSelector(state=>state.auth.isLoggedIn)
-
-
+    let isLoggedIn=useSelector(state=>state.auth.isLoggedIn)
+    
     useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/profile')
+        }
+    }, [isLoggedIn, navigate])
 
-    }, )
-
-    if (isLoggedIn) {
-        navigate('/profile')
-    }
     return (<div className={s.container}>
         <BoxContainer title={'Sing in'} subTextForm={'Already have an account?'} subLinkUrlText={'Sign up'}
                       subLinkUrl={'/registration'}>

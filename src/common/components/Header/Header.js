@@ -1,26 +1,25 @@
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
-import Button from '@mui/material/Button'
-import s from './Header.module.css'
-import {useAppDispatch, useAppSelector} from '../../hooks/react-redux-hooks'
-import {useSelector} from "react-redux";
-import {Box, LinearProgress} from '@mui/material'
-import { NavLink , Navigate} from 'react-router-dom'
-import {useState} from 'react'
+import styles from './Header.module.css'
+import { useAppDispatch } from '../../hooks/react-redux-hooks'
+import { useSelector } from "react-redux";
+import { Box, LinearProgress } from '@mui/material'
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import { logOutTC } from '../../../features/Login/auth-reducer'
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
     const isOpen = useSelector(state => state.app.status)
-
+    const navigate = useNavigate();
     const dispatch = useAppDispatch()
     const [isActive, setIsActive] = useState(false)
     const setActiveHandler = () => {
         setIsActive(!isActive)
     }
-    const name = useAppSelector(state => state.auth.userInfo?.name)
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
     const logOutHandler = () => {
+        debugger
         dispatch(logOutTC())
         setActiveHandler()
     }
@@ -28,48 +27,21 @@ const Header = () => {
     return (
         <AppBar color="inherit" position="static">
             <Toolbar>
-                <Box className={s.box} px={10} width="100%">
-                    {isLoggedIn ?
-                        <div className={s.button} onClick={setActiveHandler}>
-                            <div className={s.name}>
-                                <h3>LOGO</h3>
-                            </div>
-                            {/* <div className={s.img}>
-                                <img
-                                    src="https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg"/>
-                            </div> */}
+                <Box className={styles.box} px={10} width="100%">
+                    <div className={styles.name}>
+                        <h3 onClick={() => navigate('/mainPage')}>MyBlog</h3>
+                    </div>
+                    <div>
+                        <div className={styles.menu}>
+                            <Link to="/mainPage" className={styles.nav}>Blog</Link>
+                            <Link to="/profile" className={styles.nav}>Profile</Link>
+                            <Link onClick={logOutHandler} className={styles.nav}>LogOut</Link>
                         </div>
-                        : <Button variant="contained" size="large" color="primary" sx={{borderRadius: 7.5}}>Sing
-                            in</Button>}
-                    {
-                        <div >
-                          
-                                <div>
-                                    <NavLink
-                                        to={'/mainPage'}
-                                        //className={s.nav}
-                                        //onClick={setActiveHandler}
-                                    >
-                                        {/* <SvgSelector svgName={"profile"}/> Profile */}
-                                        <h1>Blog</h1>
-                                    </NavLink>
-                                </div>
-                                <div>
-                                    <NavLink
-                                        to={'/profile'}
-                                        //className={s.nav}
-                                        //onClick={logOutHandler}
-                                    >
-                                        {/* <SvgSelector svgName={"logOut"}/> Log out */}
-                                        <h1>Profile</h1>
-                                    </NavLink>
-                             
-                            </div>
-                        </div>
-                    }
+                    </div>
+
                 </Box>
             </Toolbar>
-            {isOpen === 'loading' ? <LinearProgress/> : ''}
+                {isOpen === 'loading' ? <LinearProgress /> : ''}
         </AppBar>
     );
 };

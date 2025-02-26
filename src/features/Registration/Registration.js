@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import {useFormik} from "formik";
 import {Button, FormGroup, IconButton, InputAdornment} from "@mui/material";
@@ -8,19 +8,21 @@ import s from './registration.module.css'
 import {useAppDispatch} from "../../common/hooks/react-redux-hooks";
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import { registerTC } from '../Login/auth-reducer';
-
+import { useSelector } from 'react-redux';
+import {useNavigate} from "react-router-dom";
 
 
 const Registration = () => {
     const dispatch = useAppDispatch()
     let [isShowPassword, setShowPassword] = useState(false);
+    let isLoggedIn=useSelector(state=>state.auth.isLoggedIn)
+    const navigate = useNavigate();
 
     const formik = useFormik({
         initialValues: {
             email: '',
             userName: '',
             password: '',
-            //confirmPassword: ''
         },
 
         validate: (values) => {
@@ -36,15 +38,6 @@ const Registration = () => {
             if (values.password.length <= 4) {
                 errors.password = 'Password must be 5 symbol'
             }
-            // if (values.confirmPassword.length <= 4) {
-            //     errors.confirmPassword = 'Password must be 5 symbol'
-            // }
-            // if (values.confirmPassword.length >1 )
-            // {
-            //     if (values.password !== values.confirmPassword) {
-            //         errors.confirmPassword = 'Passwords must be the same'
-            //     }
-            // }
             return errors
         },
         onSubmit: values => {
@@ -58,6 +51,12 @@ const Registration = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    useEffect(() => {
+            if (isLoggedIn) {
+                navigate('/profile')
+            }
+        }, [])
 
     return (
         <div className={s.container}>
@@ -124,34 +123,6 @@ const Registration = () => {
                                     </InputAdornment>
                             }}
                         />
-                        {/* <TextField
-                            error={
-                                Boolean( formik.errors.confirmPassword && formik.touched.confirmPassword )
-                            }
-                            helperText={
-                                formik.errors.confirmPassword &&
-                                formik.touched.confirmPassword &&
-                                String(formik.errors.confirmPassword)
-                            }
-                            label="Confirm password"
-                            type={isShowPassword? "text": "password"}
-                            margin="normal"
-                            {...formik.getFieldProps('confirmPassword')}
-                            inputProps={{style: {fontFamily: font}}}
-                            InputLabelProps={{style: {fontFamily: font}}}
-                            InputProps={{
-                                endAdornment:
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                        >
-                                            {isShowPassword ? <VisibilityOff/> : <Visibility/>}
-                                        </IconButton>
-                                    </InputAdornment>
-                            }}
-                        /> */}
                         <Button sx={{borderRadius: 7.5, mt: 3}} type={'submit'} variant={'contained'} color={'primary'}>
                             Sing up
                         </Button>

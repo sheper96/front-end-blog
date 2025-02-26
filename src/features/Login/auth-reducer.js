@@ -1,16 +1,11 @@
-import {Dispatch} from "redux";
-import {authAPI, ChangeUserNameParamsType, ForgotType, loginParamsType, SetNewPasswordType, UpdateUserNameType} from "../../app/api";
+import {authAPI} from "../../app/api";
 import {handleServerNetworkError} from "../../common/utils/utils";
-import {setAppErrorAC, setAppInitializedAC, setAppStatusAC} from "../../app/app-reducer";
-import axios, { AxiosError } from "axios";
-import { AppThunk } from "../../app/store";
-
+import { setAppStatusAC} from "../../app/app-reducer";
+import axios from "axios";
 
 export function isAxiosError(error) {
     return axios.isAxiosError(error);
 }
-
-
 
 const initialState = {
     email: '',
@@ -37,8 +32,6 @@ export const authReducer = (state = initialState, action) => {
     }
 }
 
-//Action Creators
-
 export const setUserInfoAC = (userProfile) => {
     return {type: "AUTH/SET-USER-INFO", userInfo: userProfile} 
 }
@@ -49,8 +42,6 @@ export const setIsPasswordReset = (isPasswordReset) => {
     return {type: "AUTH/SET-RESET-PASSWORD", isPasswordReset: isPasswordReset} 
 }
 export const setLogInAC = (isLoggedIn) => ({type: 'AUTH/SET-LOGGED_IN_OUT', isLoggedIn} )
-
-//Thunk Creators
 
 
 export const updateUserInfoAvatarTC = (data) => async (dispatch) => {
@@ -87,7 +78,7 @@ export const loginTC = (data) => async (dispatch) => {
 
 export const logOutTC = () => async (dispatch) => {
     try {
-        const res = await authAPI.logOut()
+        await authAPI.logOut()
         dispatch(setLogInAC(false))
     } catch (error) {
     }
@@ -103,41 +94,11 @@ export const updateUserInfoTC = (data) => async (dispatch) => {
     }
 }
 
-export const forgotPasswordTC = (data) => async (dispatch) => {
-    dispatch(setAppStatusAC("loading"))
-    try {
-        const res = await authAPI.forgotPassword(data)
-        dispatch(setForgottenEmailAC(data.email))
-        dispatch(setIsPasswordReset(true))
-    } finally {
-        dispatch(setAppStatusAC('succeeded'))
-    }
-}
-
-export const setNewPasswordTC = (data) => async (dispatch) => {
-    dispatch(setAppStatusAC("loading"))
-    try {
-        const res = await authAPI.setNewPassword(data)
-        dispatch(setIsPasswordReset(false))
-    } finally {
-        dispatch(setAppStatusAC('succeeded'))
-    }
-}
-
-
 export const registerTC = (data) => async (dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
-        const res = await authAPI.register(data)
+        await authAPI.register(data)
         window.location.href = '/login'
-    }catch (error) {
-        if (isAxiosError(error)) {
-            if (error.response?.data.error) {
-                handleServerNetworkError(error.response?.data.error, dispatch)
-            } else {
-                handleServerNetworkError(error.message, dispatch)
-            }
-        }
     }
     finally {
         dispatch(setAppStatusAC('succeeded'))
