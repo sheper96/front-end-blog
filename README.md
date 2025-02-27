@@ -13,7 +13,7 @@ This is a simple Blog Page App built with React. Users can register, log in, cre
 ## Installation
 
 1. Clone the repository:
-2. git clone https://github.com/sheper96/weatherApp.git
+2. git clone https://github.com/sheper96/front-end-blog.git
 3. Install dependencies:
     npm install
    
