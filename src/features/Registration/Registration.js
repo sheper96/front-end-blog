@@ -5,15 +5,14 @@ import {Button, FormGroup, IconButton, InputAdornment} from "@mui/material";
 import TextField from '@mui/material/TextField';
 import {font} from "../../app/App";
 import s from './registration.module.css'
-import {useAppDispatch} from "../../common/hooks/react-redux-hooks";
+import { useSelector,useDispatch } from "react-redux";
 import {Visibility, VisibilityOff} from '@mui/icons-material';
 import { registerTC } from '../Login/auth-reducer';
-import { useSelector } from 'react-redux';
 import {useNavigate} from "react-router-dom";
 
 
 const Registration = () => {
-    const dispatch = useAppDispatch()
+    const dispatch = useDispatch()
     let [isShowPassword, setShowPassword] = useState(false);
     let isLoggedIn=useSelector(state=>state.auth.isLoggedIn)
     const navigate = useNavigate();
@@ -33,7 +32,7 @@ const Registration = () => {
                 errors.email = 'Invalid email address';
             }
             if (!values.userName) {
-                errors.email = 'User name is required'
+                errors.userName = 'User name is required'
             }
             if (values.password.length <= 4) {
                 errors.password = 'Password must be 5 symbol'
@@ -42,6 +41,7 @@ const Registration = () => {
         },
         onSubmit: values => {
             dispatch(registerTC(values))
+            alert('registration succesfull')
             formik.resetForm();
         },
     });
@@ -60,7 +60,7 @@ const Registration = () => {
 
     return (
         <div className={s.container}>
-            <BoxContainer title={'Sing in'} subTextForm={'Already have an account?'} subLinkUrlText={'Sign In'} subLinkUrl={'/login'} >
+            <BoxContainer title={'Sign Up'} subTextForm={'Already have an account?'} subLinkUrlText={'Sign Up'} subLinkUrl={'/login'} >
                 <form onSubmit={formik.handleSubmit}>
                     <FormGroup>
                         <TextField

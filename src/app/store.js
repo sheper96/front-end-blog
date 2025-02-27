@@ -8,7 +8,6 @@ const rootReducer = combineReducers({
   app: appReducer,
   auth:authReducer,
   posts:postsReducer,
-//   cards:cardsReducer
 })
 
 

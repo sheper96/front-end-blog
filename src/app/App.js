@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from './App.module.css';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes , Navigate } from "react-router-dom";
 import { Login } from '../features/Login/Login';
 import Registration from '../features/Registration/Registration';
 import { createTheme } from '@mui/material/styles'
@@ -33,6 +33,7 @@ function App() {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
 
   useEffect(() => {
+    debugger
     dispatch(initializeAppTC())
   }, [])
 
@@ -44,27 +45,29 @@ function App() {
       </div>)
   }
 
-      return (
-      <div >
-        <Router>
-          {isLoggedIn && <Header />}
-          <div className={styles.appContainer}>
-            <div className={styles.app}>
-              <Routes>
-                <Route path={'/login'} element={<Login />}></Route>
-                <Route path={'/registration'} element={<Registration />}></Route>
-                <Route path={'/mainPage'} element={<MainPage />}></Route>
-                <Route path={'/profile'} element={<Profile />}></Route>
-                <Route path={'/editPost/:id'} element={<EditPost />}></Route>
-                <Route path={'/addPost'} element={<AddPost />}></Route>
-                <Route path={'/post/:id'} element={<PostPage />}></Route>
-              </Routes>
-            </div >
-          </div>
-        </Router>
-      </div>
+  return (
+    <div >
+      <Router>
+        {isLoggedIn && <Header />}
+        <div className={styles.appContainer}>
+          <div className={styles.app}>
+            <Routes>
+              <Route path="/" element={<Navigate to="/mainPage" />} />
+              <Route path={'/login'} element={<Login />}></Route>
+              <Route path={'/registration'} element={<Registration />}></Route>
+              <Route path={'/mainPage'} element={isLoggedIn ? <MainPage /> : <Navigate to="/login" />}></Route>
+              <Route path={'/profile'} element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}></Route>
+              <Route path={'/editPost/:id'} element={isLoggedIn ? <EditPost /> : <Navigate to="/login" />}></Route>
+              <Route path={'addPost'} element={isLoggedIn ? <AddPost /> : <Navigate to="/login" />}></Route>
+              <Route path={'/post/:id'} element={isLoggedIn ? <PostPage /> : <Navigate to="/login" />}></Route>
+              <Route path="*" element={<Navigate to="/mainPage" />} />
+            </Routes>
+          </div >
+        </div>
+      </Router>
+    </div>
 
-      );
+  );
 }
 
-      export default App;
+export default App;

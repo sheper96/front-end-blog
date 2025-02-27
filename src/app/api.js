@@ -1,20 +1,12 @@
-import axios, { AxiosResponse } from 'axios'
-// import {CardsType, CardsUrlType } from '../features/Card/cards-reducer';
-// import { UserProfileType } from '../features/Login/auth-reducer';
-// import {PackType, UrlParamsType } from '../features/Packs/packs-reducer';
+import axios from 'axios'
 
 export const instance = axios.create({
-    //baseURL: process.env.REACT_APP_BACK_URL || 'https://neko-back.herokuapp.com/2.0/',
     baseURL: 'http://localhost:4000',
+    //baseURL: 'https://back-end-blog-i310.onrender.com',
     withCredentials: true,
     "Content-Type": "application/json; charset=utf-8"
 
 })
-
-// const herokuInstance = axios.create({
-//     baseURL: 'https://neko-back.herokuapp.com/2.0/',
-//     withCredentials: true,
-// })
 
 export const authAPI = {
     register(data) {

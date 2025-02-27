@@ -1,8 +1,5 @@
-import {Dispatch} from "redux"
 import {setLogInAC, setUserInfoAC} from "../features/Login/auth-reducer";  
 import {authAPI} from "./api";
-// import { AppThunk } from "./store";
-
 
 const initialState = {
     status: 'idle',
@@ -30,23 +27,19 @@ export const appReducer = (state = initialState, action) => {
 
 export const initializeAppTC = () => async (dispatch) => {
     try {
-        const res = await authAPI.authMe()
-        const {iat, exp , ...userData} = res.data
-        dispatch(setLogInAC(true))
-        dispatch(setUserInfoAC(userData))
-    } catch (e) {
+        debugger
+        const res = await authAPI.authMe();
+        dispatch(setLogInAC(true));
+        dispatch(setUserInfoAC(res.data));
+    } catch (error) {
+        const errorMessage = error?.data?.message || "Not Authorized";
+        console.warn("Auth Error:", errorMessage);
+        console.log("Auth Error:", errorMessage);
+        dispatch(setLogInAC(false)); 
     } finally {
-        dispatch(setAppInitializedAC(true))
+        dispatch(setAppInitializedAC(true));
     }
-}
-
-// export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-// export type InitialStateType = {
-//     status: RequestStatusType
-//     error: string | null,
-//     modaltype: string | null,
-//     isInitialized: boolean
-// }
+};
 
 export const setAppErrorAC = (error) => ({type: 'APP/SET-ERROR', error} )
 export const setAppModalTypeAC = (modaltype) => ({type: 'APP/SET-TYPE', modaltype} )

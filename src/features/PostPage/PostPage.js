@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./PostPage.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,35 +7,44 @@ import { getPostByIdTC, deletePostTC } from "../MainPage/posts-reducer";
 import Button from '@mui/material/Button';
 
 
+
 export function PostPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  let isLoggedIn = useSelector(state => state.auth.isLoggedIn)
   const isInitialized = useSelector((state) => state.app.isInitialized)
   const post = useSelector((state) => state.posts.post)
   const { id } = useParams()
-  const userId = useSelector((state) => state.auth.userInfo.user.id)
-  const authId = post ? post.author : null;
-  let isCurrentUserPost = false
-  if (userId && authId) {
-    isCurrentUserPost = userId == authId;
-   
-    console.log(typeof authId ,typeof userId )
-  }
-  
+  const userId = useSelector((state) => state.auth.userInfo?.user?.id) ?? null;
+  const authId = post?.author ?? null;
+
+  const [isCurrentUserPost, setIsCurrentUserPost] = useState(false);
+
+  useEffect(() => {
+    if (post && userId) {
+      setIsCurrentUserPost(userId === authId);
+    }
+  }, [post, userId, authId]);
+
+
 
   const editPostHandler = () => {
     navigate(`/editPost/${id}`, { state: { post } });
   };
   const deletePostHandler = (postId) => {
-    dispatch(deletePostTC(postId))
-    navigate('/mainPage');
+    if (postId) {
+      dispatch(deletePostTC(postId))
+      navigate('/mainPage');
+    }
+
   };
 
-  const dispatch = useDispatch();
   useEffect(() => {
-    if (isInitialized) {
+    if (isInitialized && id) {
       dispatch(getPostByIdTC(id));
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, isInitialized]);
+
 
   return (
     <div className={styles.container}>

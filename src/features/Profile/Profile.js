@@ -1,19 +1,18 @@
 import {Button, TextField} from "@mui/material"
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer"
-import {useAppDispatch, useAppSelector} from "../../common/hooks/react-redux-hooks"
+import { useSelector,useDispatch } from "react-redux";
 import styles from './Profile.module.css'
-import {Navigate,} from "react-router-dom";
-import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useState ,useEffect} from "react";
 import {logOutTC } from "../Login/auth-reducer"
 import { SvgSelector } from '../../common/components/SvgSelector/svgSelector'
 import avatar from '../../app/assets/images/avatar.jpg'
-import {  useSelector } from 'react-redux';
 
 const Profile = () => {
     
-    const dispatch = useAppDispatch()
-    
-    let nameAuth=useSelector(state=>state.auth.userInfo?.user.userName)
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+    let nameAuth=useSelector(state=>state.auth?.userInfo?.user?.userName)
     let email=useSelector(state=>state.auth.userInfo?.user.email)
     let isLoggedIn=useSelector(state=>state.auth.isLoggedIn)
     const [name, setName] = useState(nameAuth)
@@ -25,10 +24,8 @@ const Profile = () => {
         setEditMode(false)
     }
 
-    if (!isLoggedIn) {
-        return <Navigate to={'/login'}/>
-    }
-
+    
+    
     return (
         <div className={styles.container}>
             <div className={styles.backToCardsBlock}>

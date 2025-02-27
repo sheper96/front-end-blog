@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useLocation, useParams } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-// import styles from "./EditPost.module.css";
 import styles from "./EditPost.module.css";
 import { updatePostByIdTC } from '../MainPage/posts-reducer'
-import { useFormik, Field, Form } from "formik";
+import { useFormik} from "formik";
 import FormControl from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';

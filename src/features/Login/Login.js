@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -10,8 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import BoxContainer from "../../common/components/BoxContainer/BoxContainer";
 import s from './login.module.css'
 import {useNavigate} from "react-router-dom";
-import {IconButton, InputAdornment, Link} from "@mui/material";
-import Box from '@mui/material/Box';
+import {IconButton, InputAdornment} from "@mui/material";
 import { loginTC } from './auth-reducer';
 import {Visibility, VisibilityOff } from '@mui/icons-material';
 import { font } from '../../app/App';
@@ -59,7 +56,7 @@ export const Login = () => {
     }, [isLoggedIn, navigate])
 
     return (<div className={s.container}>
-        <BoxContainer title={'Sing in'} subTextForm={'Already have an account?'} subLinkUrlText={'Sign up'}
+        <BoxContainer title={'Sign in'} subTextForm={'Dont Have an account?'} subLinkUrlText={'Sign up'}
                       subLinkUrl={'/registration'}>
             <form onSubmit={formik.handleSubmit} className={s.form}>
                 <FormControl>
@@ -108,14 +105,6 @@ export const Login = () => {
                                     </InputAdornment>
                             }}
                         />    
-                        <Box className={s.row}>
-                            <FormControlLabel {...formik.getFieldProps('rememberMe')} label={'Remember me'}
-                                              control={<Checkbox/>}/>
-
-                            <Link href="/forgotpassword" underline="hover">
-                                Forgot Password?
-                            </Link>
-                        </Box>
                         <Button className='button' type={'submit'} variant={'contained'} color={'primary'}>
                             Sign in
                         </Button>

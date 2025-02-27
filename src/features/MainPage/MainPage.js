@@ -11,6 +11,7 @@ export const MainPage = () => {
 
     const isInitialized = useSelector((state) => state.app.isInitialized)
     const posts = useSelector((state) => state.posts.postsData.posts)
+    console.log(posts)
     const postsData = useSelector((state) => state.posts.postsData)
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -44,10 +45,7 @@ export const MainPage = () => {
 
 
     useEffect(() => {
-        if (!isLoggedIn) {
-            navigate('/login')
-        }
-        else if (isInitialized) {
+         if (isInitialized) {
             dispatch(getAllPostsTC());
         }
     }, [dispatch, isLoggedIn, dispatch, navigate]);
@@ -67,7 +65,7 @@ export const MainPage = () => {
                     Add Post
                 </Button>
             </div>
-            <div className={styles.postsContainer}>
+            {posts && posts.length > 0 ? <div> <div className={styles.postsContainer}>
                 {posts && posts.map((post) => (
                     <div key={post.id} className={styles.post}>
                         <h2>{post.title}</h2>
@@ -78,9 +76,9 @@ export const MainPage = () => {
                     </div>
                 ))}
             </div>
-            <div className={styles.pagination}>
-                <Pagination count={postsData.pages} onChange={(event, value) => paginationHandler(value)} color="primary" />
-            </div>
+                <div className={styles.pagination}>
+                    <Pagination count={postsData.pages} onChange={(event, value) => paginationHandler(value)} color="primary" />
+                </div> </div> : <div><h1>No Posts Yet</h1></div>}
         </div>
     );
 
